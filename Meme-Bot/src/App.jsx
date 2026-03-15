@@ -1,22 +1,20 @@
-import React from 'react'
+import { useDispatch,useSelector} from 'react-redux'
 import { fetchPhotos, fetchVideos } from './api/mediaApi'
+import SearchBar from './components/SearchBar'
+import { Tabs } from './components/Tabs'
 
 
 
-function App() {
+
+const App = () => {
+  const query = useSelector((state)=>state.search.query)
+
   return (
+    
     <div className='h-screen w-full text-white bg-gray-950'>
-          <button className = "bg-green-400 px-4 py-2 m-5"onClick ={async ()=>{
-            const data = await fetchPhotos('dog')
-            console.log(data.results)
-          }}
-          >get-Photos</button>
-
-          <button className = "bg-green-400 px-4 py-2 m-5"onClick ={async ()=>{
-            const data = await fetchVideos('dog')
-            console.log(data.videos)
-          }}
-          >get-Videos</button>
+          <SearchBar />
+          <Tabs />
+          
 
     </div>
   )
