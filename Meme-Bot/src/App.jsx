@@ -2,6 +2,7 @@ import { useDispatch,useSelector} from 'react-redux'
 import { fetchPhotos, fetchVideos } from './api/mediaApi'
 import SearchBar from './components/SearchBar'
 import { Tabs } from './components/Tabs'
+import ResultGrid from './components/ResultGrid'
 
 
 
@@ -14,6 +15,7 @@ const App = () => {
     <div className='h-screen w-full text-white bg-gray-950'>
           <SearchBar />
           <Tabs />
+          <ResultGrid/>
           
 
     </div>
