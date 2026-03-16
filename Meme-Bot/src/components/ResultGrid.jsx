@@ -17,28 +17,32 @@ const ResultGrid = () => {
                 dispatch(setLoading())
                 let data = []
                 if (activeTab == 'photos') {
-                    let response = await fetchPhotos(query)                    
+                    let response = await fetchPhotos(query)
                     data = response.results.map((item) => ({
                         id: item.id,
                         type: 'photo',
                         title: item.alt_description,
                         thumbnail: item.urls.small,
-                        src: item.urls.full,
-                        url:item.links.html
+                        // Use a smaller image source by default to improve load performance
+                        src: item.urls.regular || item.urls.small,
+                        url: item.links.html
                     }))
                 }
                 if (activeTab == 'videos') {
                     let response = await fetchVideos(query)
-                    
 
-                    data = response.videos.map((item) => ({
-                        id: item.id,
-                        type: 'video',
-                        title: item.user.name || 'video',
-                        thumbnail: item.image,
-                        src: item.video_files[0].link,
-                        url:item.url
-                    }))
+                    data = response.videos.map((item) => {
+                        const preferredFile = item.video_files.find((file) => file.quality === 'sd') || item.video_files[0]
+                        return {
+                            id: item.id,
+                            type: 'video',
+                            title: item.user.name || 'video',
+                            thumbnail: item.image,
+                            // Prefer a smaller file if available to speed up loading
+                            src: preferredFile?.link || item.video_files[0]?.link,
+                            url: item.url
+                        }
+                    })
                 }
                
                 dispatch(setResults(data))
